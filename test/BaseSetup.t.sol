@@ -2,12 +2,12 @@
 pragma solidity >=0.8;
 
 import {Utils} from "./Utils.sol";
-import {Erc20} from "../contracts/Erc20.sol";
+import {ERC20} from "../contracts/ERC20.sol";
 import {stdStorage, StdStorage, Test, console, StdAssertions} from "forge-std/Test.sol";
 
 contract BaseSetup is Test {
     Utils internal utils;
-    Erc20 internal erc20;
+    ERC20 internal token;
 
     address payable[] internal users;
     address internal owner;
@@ -19,7 +19,11 @@ contract BaseSetup is Test {
         owner = users[0];
         dev = users[1];
 
-        vm.prank(owner);
-        crowdFunding = new Erc20();
+        hoax(owner);
+        token = new ERC20();
+    }
+
+    function test_setup() public {
+        assertEq(token.totalSupply(), token.balanceOf(owner));
     }
 }

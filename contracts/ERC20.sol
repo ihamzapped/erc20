@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.1;
 
-import {IERC20} from "./Interface.sol";
+import {IERC20} from "../interfaces/IERC20.sol";
 
-contract Erc20 is IERC20 {
+contract ERC20 is IERC20 {
     bytes10 public constant name = "Mock Token";
     bytes3 public constant symbol = "MTK";
 
@@ -52,6 +52,8 @@ contract Erc20 is IERC20 {
         balances[_to] += _value;
 
         emit Transfer(_from, _to, _value);
+
+        return true;
     }
 
     function approve(
@@ -63,6 +65,8 @@ contract Erc20 is IERC20 {
 
         allowances[msg.sender][_spender] = _value;
         emit Approval(msg.sender, _spender, _value);
+
+        return true;
     }
 
     function allowance(
