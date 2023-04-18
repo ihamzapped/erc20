@@ -1,33 +1,19 @@
 import hre, { ethers } from "hardhat";
-import { fromEpoch } from "./helpers";
-
-const { parseUnits } = ethers.utils;
-
-const min = 100;
-const goal = 1_200_000;
-const time = Math.round(Date.now() / 1000) * 2;
-
-const goalBig = parseUnits(String(goal));
-
-const params = [goalBig, time, min] as const;
 
 async function main() {
   try {
-    const CrowdFunding = await ethers.getContractFactory("CrowdFunding");
-    const cf = await CrowdFunding.deploy(...params);
+    const contract = await ethers.getContractFactory("ERC20");
+    const erc20 = await contract.deploy();
 
-    await cf.deployTransaction.wait(6);
+    await erc20.deployTransaction.wait(6);
 
     console.log(
-      `Deployed CrowdFunding Contract
-      Goal: ${goal}
-      Deadline: ${fromEpoch(time)}
-      Address: ${cf.address}\n`
+      `Deployed Contract
+      Address: ${erc20.address}\n`
     );
 
     await hre.run("verify:verify", {
-      address: cf.address,
-      constructorArguments: params,
+      address: erc20.address,
     });
   } catch (error) {
     throw error;
